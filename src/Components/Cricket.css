@@ -1,0 +1,118 @@
+body{
+   background-image: url("https://wallpaperaccess.com/full/3468725.jpg");
+   background-size: cover;
+   opacity: 0.9;
+    
+}
+#cricket-main {
+  text-align: center;
+  margin-top: 40px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+#input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  margin-right: 10px;
+}
+
+#submit {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.button {
+  margin: 10px 5px;
+  padding: 10px 15px;
+  background-color: #1e88e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+   transition: background 0.3s;
+}
+
+.button:hover {
+  background-color: #0d47a1;
+}
+.strike-rate-container {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Custom Alert Styling */
+.custom-alert {
+  background-color: #fbc02d;
+  color: black;
+  padding: 15px 25px;
+  border-radius: 10px;
+  display: inline-block;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 20px auto;
+  animation: fadeInOut 20s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+#cricket-main{
+    margin: 153px;
+    
+   border: 2px solid black;
+   border-radius: 45px;
+   background-color: rgb(124, 120, 120) ;
+  
+    text-align: center;
+  font-family: Arial;
+  padding: 20px;
+   
+}
+#input{
+ font-size: larger;
+ font-style: normal;
+ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ font-weight: bold;
+ 
+}
+#input::placeholder{
+
+}
+#submit
+{
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   font-weight: bold;
+   font-size: larger;
+}
+
+
+.button {
+  margin: 5px;
+  padding: 15px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: larger;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}

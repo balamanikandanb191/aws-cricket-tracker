@@ -1,0 +1,92 @@
+body {
+  background-image: url("https://wallpaperaccess.com/full/3468725.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  font-family: 'Segoe UI', sans-serif;
+  opacity: 0.9;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main Container */
+#cricket-main {
+  margin: 100px auto;
+  max-width: 600px;
+  padding: 30px;
+  background-color: rgba(124, 120, 120, 0.9);
+  border: 2px solid black;
+  border-radius: 45px;
+  text-align: center;
+}
+
+/* Input Styles */
+#input {
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  margin-right: 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Placeholder optional style */
+#input::placeholder {
+  color: #999;
+}
+
+/* Submit Button */
+#submit {
+  padding: 10px 20px;
+  font-size: larger;
+  font-weight: bold;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#submit:hover {
+  background-color: darkgreen;
+}
+
+/* Buttons */
+.button {
+  margin: 10px 5px;
+  padding: 15px 20px;
+  font-size: larger;
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+/* Custom Alert Box */
+.custom-alert {
+  background-color: #fbc02d;
+  color: black;
+  padding: 15px 25px;
+  border-radius: 10px;
+  display: inline-block;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 20px auto;
+  animation: fadeInOut 5s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Fade Animation */
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
