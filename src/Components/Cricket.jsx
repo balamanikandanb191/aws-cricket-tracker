@@ -1,134 +1,174 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Cricket.css';
 
 function Cricket() {
-  const [name, setName] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [score, setScore] = useState(0);
-  const [balls, setBalls] = useState(0);
-  const [customAlert, setCustomAlert] = useState("");
-  const [milestoneShown, setMilestoneShown] = useState({ fifty: false, century: false });
+  const [teamName, setTeamName] = useState('');
+  const [playerName, setPlayerName] = useState('');
+  const [nonStrikerName, setNonStrikerName] = useState('');
+  const [striker, setStriker] = useState('striker');
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [players, setPlayers] = useState([]);
+  const [currentStats, setCurrentStats] = useState({
+    striker: { name: '', score: 0, balls: 0 },
+    nonStriker: { name: '', score: 0, balls: 0 },
+  });
+  const [overBalls, setOverBalls] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
+  const [customAlert, setCustomAlert] = useState('');
+  const [teamColor, setTeamColor] = useState('#4CAF50'); // default green
 
-  const handleSubmit = (e) => {
+  const showAlert = (msg) => {
+    setCustomAlert(msg);
+    setTimeout(() => setCustomAlert(''), 4000);
+  };
+
+  const handleStart = (e) => {
     e.preventDefault();
-    if (name.trim() === "") {
-      alert("Please enter a player name");
+    if (!teamName.trim() || !playerName.trim() || !nonStrikerName.trim()) {
+      alert('Please fill all fields');
       return;
     }
-    setDisplayName(name);
-    setScore(0);
-    setBalls(0);
-    setMilestoneShown({ fifty: false, century: false }); // Reset alerts
-  };
 
-  const showAlert = (message) => {
-    setCustomAlert(message);
-    setTimeout(() => setCustomAlert(""), 6000);
-  };
-
-  useEffect(() => {
-    if (score >= 50 && score < 56 && !milestoneShown.fifty) {
-      showAlert(`${displayName} has scored Fifty! 🏏`);
-      setMilestoneShown(prev => ({ ...prev, fifty: true }));
+    // Team color logic: If name contains "red", make it red
+    if (teamName.toLowerCase().includes('red')) {
+      setTeamColor('#FF0000');
+    } else {
+      setTeamColor('#4CAF50'); // green
     }
-  }, [score, displayName]);
 
-  useEffect(() => {
-    if (score >= 100 && score < 106 && !milestoneShown.century) {
-      showAlert(`${displayName} has scored a Century! 🎉`);
-      setMilestoneShown(prev => ({ ...prev, century: true }));
-    }
-  }, [score, displayName]);
+    setCurrentStats({
+      striker: { name: playerName, score: 0, balls: 0 },
+      nonStriker: { name: nonStrikerName, score: 0, balls: 0 },
+    });
+    setFormSubmitted(true);
+  };
 
   const updateScore = (runs) => {
-    setScore(score + runs);
-    setBalls(balls+ 1);
-   if ((balls + 1) % 6 === 0) {
-  showAlert(`End of Over: ${(balls + 1) / 6}`);
-}
+    const updatedStats = { ...currentStats };
+    updatedStats[striker].score += runs;
+    updatedStats[striker].balls += 1;
+    setCurrentStats(updatedStats);
+    setTotalScore((prev) => prev + runs);
+    setOverBalls((prev) => prev + 1);
 
+    if (runs % 2 !== 0) {
+      setStriker((prev) => (prev === 'striker' ? 'nonStriker' : 'striker'));
+    }
+
+    if ((overBalls + 1) % 6 === 0) {
+      showAlert(`End of Over: ${(overBalls + 1) / 6}`);
+      setStriker((prev) => (prev === 'striker' ? 'nonStriker' : 'striker'));
+    }
   };
 
-  const calculateStrikeRate = () => {
-    return balls === 0 ? 0 : ((score / balls) * 100).toFixed(2);
+  const dotBall = () => {
+    const updatedStats = { ...currentStats };
+    updatedStats[striker].balls += 1;
+    setCurrentStats(updatedStats);
+    setOverBalls((prev) => prev + 1);
+    showAlert('Dot ball!');
+    if ((overBalls + 1) % 6 === 0) {
+      setStriker((prev) => (prev === 'striker' ? 'nonStriker' : 'striker'));
+    }
   };
 
-  const four = () => {
-    updateScore(4);
-    // showAlert(`${name} hits a cracking Four! 🔥`);
+  const handleOut = () => {
+    showAlert(`${currentStats[striker].name} is OUT!`);
+    const outPlayer = currentStats[striker];
+    setPlayers((prev) => [...prev, outPlayer]);
+
+    const nextPlayer = prompt('Enter next player name:');
+    if (!nextPlayer) {
+      showAlert('No next player entered!');
+      return;
+    }
+
+    setCurrentStats((prev) => ({
+      ...prev,
+      [striker]: { name: nextPlayer, score: 0, balls: 0 },
+    }));
   };
 
-  const six = () => {
-    updateScore(6);
-    // showAlert(`${name} smashes a massive Six! 🚀`);
+  const handleWide = () => {
+    setTotalScore((prev) => prev + 1);
+    showAlert('Wide Ball! Extra run.');
   };
 
-  const single = () => {
-    updateScore(1);
-    // showAlert("Just a Single!");
+  const handleNoBall = () => {
+    setTotalScore((prev) => prev + 1);
+    showAlert('No Ball! Free Hit.');
   };
 
-  const double = () => {
-    updateScore(2);
-    // showAlert("Nice Running! It's a Double!");
-  };
-
-  const wides = () => {
-    updateScore(1);
-    // showAlert("Wide ball! Oh no, bowler missed it!");
-  };
-
-  const out = () => {
-    showAlert("Oh no! Player is OUT! 😢");
-    setScore(0);
-    setBalls(0);
-  };
-
-  const dotball = () => {
-    setBalls(prev => prev + 1);
-    showAlert("Dot ball! No run scored.");
-  };
-
-  const noball = () => {
-    setBalls(prev => prev + 1);
-    showAlert("No ball! Free Hit coming up!");
-  };
+  const calculateStrikeRate = (score, balls) =>
+    balls === 0 ? 0 : ((score / balls) * 100).toFixed(2);
 
   return (
-    <div id='cricket-main'>
+    <div id="cricket-main">
       {customAlert && <div className="custom-alert">{customAlert}</div>}
 
-      <form onSubmit={handleSubmit}>
-        <input
-          id='input'
-          type="text"
-          placeholder="Enter player name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <button type="submit" id='submit'>Show Name</button>
-      </form>
+      {!formSubmitted ? (
+        <form onSubmit={handleStart} className="form-container">
+          <input
+            type="text"
+            placeholder="Enter Team Name"
+            value={teamName}
+            onChange={(e) => setTeamName(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Enter Striker Name"
+            value={playerName}
+            onChange={(e) => setPlayerName(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Enter Non-Striker Name"
+            value={nonStrikerName}
+            onChange={(e) => setNonStrikerName(e.target.value)}
+          />
+          <button type="submit" className="button start">Start Match</button>
+        </form>
+      ) : (
+        <div className="score-section">
+          <h1 className="team-heading" style={{ backgroundColor: teamColor }}>
+            {teamColor === '#FF0000' ? '🔴' : '🟢'} {teamName}
+          </h1>
 
-      {displayName && (
-        <>
-          <h1>{displayName}: {score} ({balls} balls)</h1>
-          <div className="strike-rate-container"> 
-            <h2>Strike Rate: {calculateStrikeRate()}</h2>
-            <h1>Over: {Math.floor(balls / 6)}.{balls % 6}</h1>
+          <h2>Total Score: {totalScore} / {players.length}</h2>
+          <h3>Overs: {Math.floor(overBalls / 6)}.{overBalls % 6}</h3>
 
-           
+          <div className="score-card">
+            <h2>{currentStats.striker.name}* - {currentStats.striker.score} ({currentStats.striker.balls})</h2>
+            <p>Strike Rate: {calculateStrikeRate(currentStats.striker.score, currentStats.striker.balls)}</p>
           </div>
-          <div>
-            <button onClick={four} className='button'>Four</button>
-            <button onClick={six} className='button'>Six</button>
-            <button onClick={single} className='button'>Single</button>
-            <button onClick={double} className='button'>Double</button>
-            <button onClick={out} className='button'>Out</button>
-            <button onClick={dotball} className='button'>Dot</button>
-            <button onClick={wides} className='button'>Wide</button>
-            <button onClick={noball} className='button'>No Ball</button>
+
+          <div className="score-card">
+            <h2>{currentStats.nonStriker.name} - {currentStats.nonStriker.score} ({currentStats.nonStriker.balls})</h2>
+            <p>Strike Rate: {calculateStrikeRate(currentStats.nonStriker.score, currentStats.nonStriker.balls)}</p>
           </div>
-        </>
+
+          <div className="button-container">
+            <button onClick={() => updateScore(1)} className="button">1 Run</button>
+            <button onClick={() => updateScore(2)} className="button">2 Runs</button>
+            <button onClick={() => updateScore(4)} className="button">Four</button>
+            <button onClick={() => updateScore(6)} className="button">Six</button>
+            <button onClick={dotBall} className="button">Dot</button>
+            <button onClick={handleWide} className="button">Wide</button>
+            <button onClick={handleNoBall} className="button">No Ball</button>
+            <button onClick={handleOut} className="button">Out</button>
+          </div>
+
+          <div className="all-players">
+            <h3>All Players Summary:</h3>
+            <ul>
+              {players.map((p, i) => (
+                <li key={i}>
+                  {p.name}: {p.score} ({p.balls}) | SR: {calculateStrikeRate(p.score, p.balls)}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       )}
     </div>
   );
