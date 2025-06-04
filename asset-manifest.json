@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Cricket_App/static/css/main.549206ae.css",
+    "main.js": "/Cricket_App/static/js/main.31d543be.js",
+    "static/js/453.07b51e5c.chunk.js": "/Cricket_App/static/js/453.07b51e5c.chunk.js",
+    "index.html": "/Cricket_App/index.html",
+    "main.549206ae.css.map": "/Cricket_App/static/css/main.549206ae.css.map",
+    "main.31d543be.js.map": "/Cricket_App/static/js/main.31d543be.js.map",
+    "453.07b51e5c.chunk.js.map": "/Cricket_App/static/js/453.07b51e5c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.549206ae.css",
+    "static/js/main.31d543be.js"
+  ]
+}
