@@ -29,11 +29,10 @@ function Cricket() {
       return;
     }
 
-    // Team color logic: If name contains "red", make it red
     if (teamName.toLowerCase().includes('red')) {
       setTeamColor('#FF0000');
     } else {
-      setTeamColor('#4CAF50'); // green
+      setTeamColor('#4CAF50');
     }
 
     setCurrentStats({
@@ -72,10 +71,18 @@ function Cricket() {
     }
   };
 
-  const handleOut = () => {
+  // ✅ NO AWS call here – just log to console
+  const handleOut = async () => {
     showAlert(`${currentStats[striker].name} is OUT!`);
     const outPlayer = currentStats[striker];
     setPlayers((prev) => [...prev, outPlayer]);
+
+    // 🔽 Simulate save to backend (local only)
+    console.log("Player out (saved locally):", {
+      playerName: outPlayer.name,
+      score: outPlayer.score,
+      balls: outPlayer.balls,
+    });
 
     const nextPlayer = prompt('Enter next player name:');
     if (!nextPlayer) {
